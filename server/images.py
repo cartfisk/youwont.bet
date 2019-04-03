@@ -5,22 +5,20 @@ from wand.image import Image
 from wand.display import display
 
 def generate_composite(background_path, overlay_path, position, grid):
-    if position <= grid.rows * grid.columns:
-        background = open(background_path, "rb")
-        overlay = open(overlay_path, "rb")
-        coordinates = grid.get_coordinates_from_position(position)
-        with Image(file=background) as background_img:
-            with Image(file=overlay) as overlay_img:
-                overlay_img.type = 'grayscale';
-                overlay_size = overlay_img.size
-                overlay_img.crop(width=overlay_size[0], height=overlay_size[0], gravity="center")
-                overlay_img.resize(grid.column_width, grid.row_height)
-                background_img.composite(overlay_img, left=coordinates.left, top=coordinates.top)
-            overlay.close()
-            background.close()
-            background_img.save(filename=background_path)
-        return True
-    return False
+    background = open(background_path, "rb")
+    overlay = open(overlay_path, "rb")
+    coordinates = grid.get_coordinates_from_position(position)
+    with Image(file=background) as background_img:
+        with Image(file=overlay) as overlay_img:
+            overlay_img.type = 'grayscale';
+            overlay_size = overlay_img.size
+            overlay_img.crop(width=overlay_size[0], height=overlay_size[0], gravity="center")
+            overlay_img.resize(grid.column_width, grid.row_height)
+            background_img.composite(overlay_img, left=coordinates.left, top=coordinates.top)
+        overlay.close()
+        background.close()
+        background_img.save(filename=background_path)
+    return True
 
 class Coordinates:
     '''Defines a point on an image defined by the top and left pixel positions'''
@@ -89,8 +87,9 @@ master_grid = Grid(
 )
 
 def update_master_image(submission_path, position, grid=master_grid, master_path="assets/images/composite/master.png"):
-    save_copy_of_master(
-        master_path=master_path,
-        iterations_folder="assets/images/composite/iterations"
-    )
-    generate_composite(master_path, submission_path, position, grid)
+    if position <= grid.rows * grid.columns:
+        save_copy_of_master(
+            master_path=master_path,
+            iterations_folder="assets/images/composite/iterations"
+        )
+        generate_composite(master_path, submission_path, position, grid)
