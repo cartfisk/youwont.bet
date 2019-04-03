@@ -7,25 +7,6 @@ from server.moderate import (
 
 SLACK_TOKEN = "xoxb-207397077559-597873676612-sF2fRZ7ehH7CoQE0f5AqAsq2"
 
-def slack_message_options(request):
-    # Parse the request payload
-    form_json = json.loads(request.form["payload"])
-
-    menu_options = {
-        "options": [
-            {
-                "text": "Approve",
-                "value": "APPROVED"
-            },
-            {
-                "text": "Reject",
-                "value": "REJECTED"
-            }
-        ]
-    }
-
-    return jsonify(menu_options, 200)
-
 def slack_message_actions(request):
     # Parse the request payload
     form_json = json.loads(request.form["payload"])
