@@ -14,21 +14,21 @@ TRACK_NAMES = [
 ]
 
 AUDIO_EXTENSION = "mp3"
-ORIGINAL_AUDIO_BASE_PATH = "../assets/audio/original"
-
-ORIGINAL_AUDIO_FILEPATHS = [
+AUDIO_BASE_PATH = "assets/audio/original"
+AUDIO_FILEPATHS = [
     "{0}/{1:02d} {2}.{3}".format(
-        ORIGINAL_AUDIO_BASE_PATH,
+        AUDIO_BASE_PATH,
         (index + 1),
         track,
         AUDIO_EXTENSION,
     ) for (index, track) in enumerate(TRACK_NAMES)
 ]
+AUDIO_ARCHIVE_PATH = "assets/audio/archive/pace-yourself.zip"
 
 BASE_IMAGE_SUBMISSION_PATH = "assets/images/submissions"
-
 IMAGE_SUBMISSION_PATHS = {
     "ACCEPTED": BASE_IMAGE_SUBMISSION_PATH + "/accepted",
     "REJECTED": BASE_IMAGE_SUBMISSION_PATH + "/rejected",
     "PENDING": BASE_IMAGE_SUBMISSION_PATH + "/pending",
 }
+MASTER_IMAGE_PATH = "assets/images/composite/master.png"

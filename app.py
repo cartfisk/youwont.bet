@@ -13,6 +13,7 @@ from flask import (
     session,
     abort,
     jsonify,
+    send_file,
 )
 from werkzeug.utils import secure_filename
 
@@ -24,7 +25,10 @@ from server.slack import (
     slack_message_actions,
 )
 from server.moderate import accept
-from server.constants import IMAGE_SUBMISSION_PATHS
+from server.constants import (
+    IMAGE_SUBMISSION_PATHS,
+    AUDIO_ARCHIVE_PATH,
+)
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -33,14 +37,10 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 @app.route("/")
 def index():
+    # TODO: check for cookie and disable site
     return render_template("index.html")
 
 # SLACK INTERACTION ENDPOINTS
-@app.route("/v1/slack/message_options", methods=["POST"])
-def message_options():
-    return slack_message_options(request)
-
-
 @app.route("/v1/slack/message_actions", methods=["POST"])
 def message_actions():
     return slack_message_actions(request)
@@ -50,6 +50,7 @@ def handle_incoming_photo():
     image = request.files.get("file")
     mongo = MongoClient(os.environ["DB"])
     submissions = mongo["youwont"]["submissions"]
+    download_codes = mongo["youwont"]["download_codes"]
 
     extension = mimetypes.guess_extension(image.mimetype)
     filename = "image_{0:05d}{1}".format(position, extension)
@@ -62,15 +63,35 @@ def handle_incoming_photo():
         "status": "PENDING",
     })
 
+    download_code_result = download_codes.insert_one({
+        "valid": True
+    })
+
+    download_code = str(mongo_result.download_code_result)
     _id = str(mongo_result.inserted_id)
 
-
-
-    # send_slack_moderation_messages(image_path)
-
+    send_slack_moderation_messages(image_path, _id)
+    # TODO: store cookie and block more than 1 submission
+    # TODO: don't make accept happen automatically
     accept(_id)
+    return jsonify({"message": "success", "download_code": download_code}, 200)
 
-    return jsonify({"message": "success"}, 200)
+@app.route("/download/<code:str>", methods=["GET"])
+def download_album(code):
+    mongo = MongoClient(os.environ["DB"])
+    download_codes = mongo["youwont"]["download_codes"]
+    code_doc = download_codes.find_one({"_id": code})
+    if code_doc is not None:
+        is_valid = code_doc.get("valid", False)
+    if is_valid:
+        with open(AUDIO_ARCHIVE_PATH, "rb") as zip:
+            send_file(
+                zip,
+                attachment_filename='pace-yourself.zip',
+                as_attachment=True
+            )
+    else:
+        return render_template("invalid.html")
 
 if __name__ == '__main__':
 

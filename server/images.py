@@ -4,6 +4,8 @@ from datetime import datetime
 from wand.image import Image
 from wand.display import display
 
+from server.constants import MASTER_IMAGE_PATH
+
 def generate_composite(background_path, overlay_path, position, grid):
     background = open(background_path, "rb")
     overlay = open(overlay_path, "rb")
@@ -67,7 +69,7 @@ class Grid:
         return Coordinates(left=left, top=top)
 
 def save_copy_of_master(
-    master_path="assets/images/composite/master.png",
+    master_path=MASTER_IMAGE_PATH,
     iterations_folder="assets/images/composite/iterations"
 ):
     timestamp = datetime.now().timestamp()
@@ -86,7 +88,12 @@ master_grid = Grid(
     column_gutter=0
 )
 
-def update_master_image(submission_path, position, grid=master_grid, master_path="assets/images/composite/master.png"):
+def update_master_image(
+    submission_path,
+    position,
+    grid=master_grid,
+    master_path=MASTER_IMAGE_PATH
+):
     if position <= grid.rows * grid.columns:
         save_copy_of_master(
             master_path=master_path,

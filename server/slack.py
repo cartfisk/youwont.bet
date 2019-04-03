@@ -49,7 +49,7 @@ def slack_message_actions(request):
 
     return jsonify("", 200)
 
-def send_slack_moderation_messages(image_path):
+def send_slack_moderation_messages(image_path, _id):
     slack_client = SlackClient(SLACK_TOKEN)
 
     with open(image_path, "rb") as file_content:
@@ -71,11 +71,11 @@ def send_slack_moderation_messages(image_path):
     	},
     	{
     		"type": "actions",
-    		"block_id": "actionblock789",
+    		"block_id": "moderate_images",
     		"elements": [
     			{
                     "type": "button",
-                    "action_id": "slack_approve_image",
+                    "action_id": "approve_{}".format(_id),
                     "text": {
                         "type": "plain_text",
                         "text": "Approve"
@@ -101,7 +101,7 @@ def send_slack_moderation_messages(image_path):
     			},
                 {
     				"type": "button",
-                    "action_id": "slack_reject_image",
+                    "action_id": "reject_{}".format(_id),
                     "text": {
                         "type": "plain_text",
                         "text": "Reject"
