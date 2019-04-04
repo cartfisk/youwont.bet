@@ -16,12 +16,8 @@ TRACK_NAMES = [
 AUDIO_EXTENSION = "mp3"
 AUDIO_BASE_PATH = "assets/audio/original"
 AUDIO_FILEPATHS = [
-    "{0}/{1:02d} {2}.{3}".format(
-        AUDIO_BASE_PATH,
-        (index + 1),
-        track,
-        AUDIO_EXTENSION,
-    ) for (index, track) in enumerate(TRACK_NAMES)
+    "{0}/{1:02d} {2}.{3}".format(AUDIO_BASE_PATH, (index + 1), track, AUDIO_EXTENSION)
+    for (index, track) in enumerate(TRACK_NAMES)
 ]
 AUDIO_ARCHIVE_PATH = "assets/audio/archive/pace-yourself.zip"
 
