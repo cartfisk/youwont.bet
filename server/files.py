@@ -36,5 +36,5 @@ def zip_directory_contents(source):
     except FileNotFoundError:
         print("No archive to delete.")
     archive = open(AUDIO_ARCHIVE_PATH, "wb")
-    archive.write(data)
+    archive.write(data.read())
     archive.close()
