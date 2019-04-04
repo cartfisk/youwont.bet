@@ -1,5 +1,5 @@
 # app.py
-import os
+import os, random
 from datetime import datetime
 import mimetypes
 from pymongo import MongoClient
@@ -21,7 +21,6 @@ from slackclient import SlackClient
 from server.slack import (
     SLACK_TOKEN,
     send_slack_moderation_messages,
-    slack_message_options,
     slack_message_actions,
 )
 from server.moderate import accept
@@ -53,7 +52,8 @@ def handle_incoming_photo():
     download_codes = mongo["youwont"]["download_codes"]
 
     extension = mimetypes.guess_extension(image.mimetype)
-    filename = "image_{0:05d}{1}".format(position, extension)
+    file_id = random.randint(0,99999)
+    filename = "image_{0:05d}{1}".format(file_id, extension)
     image_path = os.path.join(IMAGE_SUBMISSION_PATHS["PENDING"], secure_filename(filename))
     image.save(image_path)
 
@@ -67,8 +67,8 @@ def handle_incoming_photo():
         "valid": True
     })
 
-    download_code = str(mongo_result.download_code_result)
-    _id = str(mongo_result.inserted_id)
+    download_code = str(download_code_result.inserted_id)
+    _id = mongo_result.inserted_id
 
     send_slack_moderation_messages(image_path, _id)
     # TODO: store cookie and block more than 1 submission
@@ -76,7 +76,7 @@ def handle_incoming_photo():
     accept(_id)
     return jsonify({"message": "success", "download_code": download_code}, 200)
 
-@app.route("/download/<code:str>", methods=["GET"])
+@app.route("/download/<code>", methods=["GET"])
 def download_album(code):
     mongo = MongoClient(os.environ["DB"])
     download_codes = mongo["youwont"]["download_codes"]
