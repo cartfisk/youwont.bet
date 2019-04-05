@@ -6,7 +6,7 @@ from datetime import datetime
 from wand.image import Image
 # from wand.display import display
 
-from server.constants import MASTER_IMAGE_PATH
+from server.constants import MASTER_IMAGE_PATH, ORIENTATION_ROTATION_MAPPING
 
 
 def generate_composite(background_path, overlay_path, position, grid):
@@ -17,6 +17,8 @@ def generate_composite(background_path, overlay_path, position, grid):
         with Image(file=overlay) as overlay_img:
             overlay_img.type = "grayscale"
             short_side = min(iter(overlay_img.size))
+            rotate_right_degree = ORIENTATION_ROTATION_MAPPING.get(overlay_img.orientation, 0)
+            overlay_img.rotate(rotate_right_degree)
             overlay_img.crop(
                 width=short_side, height=short_side, gravity="center"
             )

@@ -28,3 +28,13 @@ IMAGE_SUBMISSION_PATHS = {
     "PENDING": BASE_IMAGE_SUBMISSION_PATH + "/pending",
 }
 MASTER_IMAGE_PATH = "assets/images/composite/master.png"
+
+DEG_CLOCKWISE_90 = 90.0
+
+ORIENTATION_ROTATION_MAPPING = {
+    "undefined": 0,
+    "right_top": DEG_CLOCKWISE_90,
+    "bottom_right": DEG_CLOCKWISE_90 * 2,
+    "top_left": 0,
+    "left_bottom": -DEG_CLOCKWISE_90,
+}
