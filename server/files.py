@@ -3,11 +3,6 @@ import shutil
 import zipfile
 import io
 
-from server.constants import (
-    AUDIO_ARCHIVE_PATH,
-)
-
-
 def delete_directory_contents(path):
     for file in os.listdir(path):
         file_path = os.path.join(path, file)
@@ -25,16 +20,16 @@ def copy_directory(source, target):
         shutil.copy(file_path, target)
 
 
-def zip_directory_contents(source):
+def zip_directory_contents(source, dest):
     data = io.BytesIO()
     with zipfile.ZipFile(data, mode="w") as z:
         for file in os.listdir(source):
-            z.write(os.path.join(source, file))
+            z.write(os.path.join(source, file), file)
     data.seek(0)
     try:
-        os.remove(AUDIO_ARCHIVE_PATH)
+        os.remove(dest)
     except FileNotFoundError:
         print("No archive to delete.")
-    archive = open(AUDIO_ARCHIVE_PATH, "wb")
+    archive = open(dest, "wb")
     archive.write(data.read())
     archive.close()
