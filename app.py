@@ -11,7 +11,6 @@ from flask import (
     redirect,
     url_for,
     flash,
-    render_template,
     session,
     abort,
     jsonify,
@@ -33,14 +32,6 @@ ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
-
-
-@app.route("/api/")
-def index():
-    print('hello')
-    # TODO: check for cookie and disable site
-    return render_template("index.html")
-
 
 # SLACK INTERACTION ENDPOINTS
 @app.route("/api/v1/slack/message_actions", methods=["POST"])
@@ -72,7 +63,7 @@ def handle_incoming_photo():
     download_code = str(download_code_result.inserted_id)
     _id = mongo_result.inserted_id
 
-    # send_slack_moderation_messages(image_path, _id)
+    send_slack_moderation_messages(image_path, _id)
     # TODO: store cookie and block more than 1 submission
     # TODO: don't make accept happen automatically
     accept(_id)
@@ -94,7 +85,7 @@ def download_album(code):
             mimetype="application/zip"
         )
     else:
-        return render_template("invalid.html")
+        return jsonify({"message": "invalid download code"}, 400)
 
 if __name__ == "__main__":
 
