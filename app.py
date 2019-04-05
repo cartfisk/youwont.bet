@@ -34,10 +34,12 @@ ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
+
 # SLACK INTERACTION ENDPOINTS
 @app.route("/api/v1/slack/message_actions", methods=["POST"])
 def message_actions():
     return slack_message_actions(request)
+
 
 @app.route("/api/v1/upload", methods=["POST"])
 def handle_incoming_photo():
@@ -70,7 +72,8 @@ def handle_incoming_photo():
     to_email = request.form["email"]
     send_download_email(to_email, download_code)
     accept(_id)
-    return jsonify({"message": "success", "download_code": download_code}, 200)
+    return jsonify({"message": "success", "download_code": download_code})
+
 
 @app.route("/api/v1/download/<code>", methods=["GET"])
 def download_album(code):
@@ -88,7 +91,7 @@ def download_album(code):
             mimetype="application/zip"
         )
     else:
-        return jsonify({"message": "invalid download code"}, 400)
+        return jsonify({"message": "invalid download code"}), 400
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
