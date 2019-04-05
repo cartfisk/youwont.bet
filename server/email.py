@@ -25,7 +25,7 @@ def send_download_email(to_email, download_code):
     THANK YOU FOR BEING PART OF THE LIMITED RELEASE.
     YOUR DOWNLOAD LINK IS BELOW:
     -----------------------------------------------
-                vlush - pace yourself
+    vlush - pace yourself
     -----------------------------------------------
     https://youwont.bet/api/v1/download/{}.zip
     -----------------------------------------------
@@ -33,7 +33,7 @@ def send_download_email(to_email, download_code):
     If you are having trouble getting the link to open,
     copy and paste it into your browser's URL bar.
 
-    PLEASE NOTE: Download codes can only be used ONCE,
+    PLEASE NOTE: Download links can only be used ONCE,
     make sure you use a computer to download.
     """.format(download_code))
 

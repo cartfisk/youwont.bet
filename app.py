@@ -70,8 +70,9 @@ def handle_incoming_photo():
     # send_slack_moderation_messages(image_path, _id)
     # TODO: store cookie and block more than 1 submission
     # TODO: don't make accept happen automatically
-    to_email = request.form["email"]
-    send_download_email(to_email, download_code)
+    to_email = request.form.get("email", None)
+    if to_email is not None:
+        send_download_email(to_email, download_code)
     accept(_id)
     return jsonify({"message": "success", "download_code": download_code})
 
