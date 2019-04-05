@@ -43,6 +43,7 @@ def message_actions():
 
 @app.route("/api/v1/upload", methods=["POST"])
 def handle_incoming_photo():
+    print(request.files)
     image = request.files.get("file")
     mongo = MongoClient(os.environ["DB"])
     submissions = mongo["youwont"]["submissions"]
@@ -66,7 +67,7 @@ def handle_incoming_photo():
     download_code = str(download_code_result.inserted_id)
     _id = mongo_result.inserted_id
 
-    send_slack_moderation_messages(image_path, _id)
+    # send_slack_moderation_messages(image_path, _id)
     # TODO: store cookie and block more than 1 submission
     # TODO: don't make accept happen automatically
     to_email = request.form["email"]
