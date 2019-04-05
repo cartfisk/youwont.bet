@@ -35,19 +35,19 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
 
-@app.route("/")
+@app.route("/api/")
 def index():
+    print('hello')
     # TODO: check for cookie and disable site
     return render_template("index.html")
 
 
 # SLACK INTERACTION ENDPOINTS
-@app.route("/v1/slack/message_actions", methods=["POST"])
+@app.route("/api/v1/slack/message_actions", methods=["POST"])
 def message_actions():
     return slack_message_actions(request)
 
-
-@app.route("/v1/upload", methods=["POST"])
+@app.route("/api/v1/upload", methods=["POST"])
 def handle_incoming_photo():
     image = request.files.get("file")
     mongo = MongoClient(os.environ["DB"])
@@ -78,8 +78,7 @@ def handle_incoming_photo():
     accept(_id)
     return jsonify({"message": "success", "download_code": download_code}, 200)
 
-
-@app.route("/download/<code>", methods=["GET"])
+@app.route("/api/v1/download/<code>", methods=["GET"])
 def download_album(code):
     mongo = MongoClient(os.environ["DB"])
     download_codes = mongo["youwont"]["download_codes"]
