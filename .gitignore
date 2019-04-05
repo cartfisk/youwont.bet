@@ -2,7 +2,9 @@
 # Created by https://www.gitignore.io/api/vim,linux,macos,flask,python,windows,sublimetext
 # Edit at https://www.gitignore.io/?templates=vim,linux,macos,flask,python,windows,sublimetext
 
+# untracked resoujrces
 assets
+data
 
 ### Flask ###
 instance/*
@@ -239,6 +241,9 @@ Temporary Items
 
 # Workspace files are user-specific
 *.sublime-workspace
+
+### VSCode ###
+.vscode
 
 # Project files should be checked into the repository, unless a significant
 # proportion of contributors will probably not be using Sublime Text
