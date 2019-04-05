@@ -8,6 +8,7 @@ from server.constants import (
     MASTER_IMAGE_PATH,
     AUDIO_BASE_PATH,
     AUDIO_FILEPATHS,
+    AUDIO_ARCHIVE_PATH,
 )
 from server.images import update_master_image
 from server.files import (
@@ -65,7 +66,7 @@ def accept(_id):
     if result.get("success", False):
         update_master_image(result["file"], result["submission"]["position"])
         update_id3_tags(AUDIO_FILEPATHS, MASTER_IMAGE_PATH)
-        zip_directory_contents(AUDIO_BASE_PATH)
+        zip_directory_contents(AUDIO_BASE_PATH, AUDIO_ARCHIVE_PATH)
         return jsonify("", 200)
     else:
         return jsonify({"message": "Can't find that submission..."}, 500)

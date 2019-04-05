@@ -1,6 +1,7 @@
 # app.py
 import os
 import random
+from bson import ObjectId
 from datetime import datetime
 import mimetypes
 from pymongo import MongoClient
@@ -28,10 +29,10 @@ from server.constants import (
     AUDIO_ARCHIVE_PATH,
 )
 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
 
 @app.route("/")
@@ -82,19 +83,20 @@ def handle_incoming_photo():
 def download_album(code):
     mongo = MongoClient(os.environ["DB"])
     download_codes = mongo["youwont"]["download_codes"]
-    code_doc = download_codes.find_one({"_id": code})
+    code_doc = download_codes.find_one({"_id": ObjectId(code)})
+    is_valid = False
     if code_doc is not None:
         is_valid = code_doc.get("valid", False)
     if is_valid:
-        with open(AUDIO_ARCHIVE_PATH, "rb") as zip:
-            send_file(
-                zip,
-                attachment_filename='pace-yourself.zip',
-                as_attachment=True
-            )
+        return send_file(
+            AUDIO_ARCHIVE_PATH,
+            attachment_filename="pace-yourself.zip",
+            as_attachment=True,
+            mimetype="application/zip"
+        )
     else:
         return render_template("invalid.html")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    app.run(host='0.0.0.0')
+    app.run(host="0.0.0.0")
