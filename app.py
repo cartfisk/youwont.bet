@@ -33,15 +33,18 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
+
 @app.route("/")
 def index():
     # TODO: check for cookie and disable site
     return render_template("index.html")
 
+
 # SLACK INTERACTION ENDPOINTS
 @app.route("/v1/slack/message_actions", methods=["POST"])
 def message_actions():
     return slack_message_actions(request)
+
 
 @app.route("/v1/upload", methods=["POST"])
 def handle_incoming_photo():
@@ -49,11 +52,9 @@ def handle_incoming_photo():
     mongo = MongoClient(os.environ["DB"])
     submissions = mongo["youwont"]["submissions"]
     download_codes = mongo["youwont"]["download_codes"]
-
-    print(image.mimetype)
-    extension = mimetypes.guess_extension(image.mimetype)
+    extension = image.filename.split(".")[-1]
     ts = datetime.now().timestamp()
-    filename = "image_{}{}".format(ts, extension)
+    filename = "image_{}.{}".format(ts, extension)
     image_path = os.path.join(IMAGE_SUBMISSION_PATHS["PENDING"], secure_filename(filename))
     image.save(image_path)
 
@@ -70,11 +71,12 @@ def handle_incoming_photo():
     download_code = str(download_code_result.inserted_id)
     _id = mongo_result.inserted_id
 
-    send_slack_moderation_messages(image_path, _id)
+    # send_slack_moderation_messages(image_path, _id)
     # TODO: store cookie and block more than 1 submission
     # TODO: don't make accept happen automatically
     accept(_id)
     return jsonify({"message": "success", "download_code": download_code}, 200)
+
 
 @app.route("/download/<code>", methods=["GET"])
 def download_album(code):
