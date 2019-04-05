@@ -1,5 +1,6 @@
 # app.py
-import os, random
+import os
+import random
 from datetime import datetime
 import mimetypes
 from pymongo import MongoClient
@@ -17,9 +18,7 @@ from flask import (
 )
 from werkzeug.utils import secure_filename
 
-from slackclient import SlackClient
 from server.slack import (
-    SLACK_TOKEN,
     send_slack_moderation_messages,
     slack_message_actions,
 )
@@ -29,7 +28,7 @@ from server.constants import (
     AUDIO_ARCHIVE_PATH,
 )
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -51,9 +50,10 @@ def handle_incoming_photo():
     submissions = mongo["youwont"]["submissions"]
     download_codes = mongo["youwont"]["download_codes"]
 
+    print(image.mimetype)
     extension = mimetypes.guess_extension(image.mimetype)
-    file_id = random.randint(0,99999)
-    filename = "image_{0:05d}{1}".format(file_id, extension)
+    ts = datetime.now().timestamp()
+    filename = "image_{}{}".format(ts, extension)
     image_path = os.path.join(IMAGE_SUBMISSION_PATHS["PENDING"], secure_filename(filename))
     image.save(image_path)
 

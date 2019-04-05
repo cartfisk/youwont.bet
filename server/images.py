@@ -16,9 +16,9 @@ def generate_composite(background_path, overlay_path, position, grid):
     with Image(file=background) as background_img:
         with Image(file=overlay) as overlay_img:
             overlay_img.type = "grayscale"
-            overlay_size = overlay_img.size
+            short_side = min(iter(overlay_img.size))
             overlay_img.crop(
-                width=overlay_size[0], height=overlay_size[0], gravity="center"
+                width=short_side, height=short_side, gravity="center"
             )
             overlay_img.resize(grid.column_width, grid.row_height)
             background_img.composite(
