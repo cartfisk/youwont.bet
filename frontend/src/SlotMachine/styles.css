@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css?family=Cairo');
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg)
+    }
+}
+
+body {
+    background-color: #292929;
+}
+
+#repeatButton {
+    appearance: none;
+    border: none;
+    background: url(../img/button.png);
+    background-size: cover;
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 150%;
+    padding: 0.25em .5em;
+    font-family: 'Cairo', sans-serif;
+}
+
+h1 span {
+    color: aliceblue;
+    border: 1px solid hsla(208, 100%, 97.1%, .2);
+    padding: 0.1em .2em;
+}
+
+.icons {
+    display: inline-block;
+    width: 30%;
+    height: 100%;
+    overflow: hidden;
+    background: #fff url(./sprite5.png) repeat-y;
+    background-size: cover;
+    will-change: backgroundPosition;
+    transition: 0.3s background-position ease-in-out;
+    padding: 0 10/3%;
+    transform: translateZ(0);
+}
+
+.icons:nth-child(2) {
+    margin: 0 10px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.slot-machine-container {
+    width: 100%;
+    height: 100%;
+}
+
+.spinner-container {
+    position: absolute;
+    top: 30%;
+    left: 21.5%;
+    height: 15%;
+    width: 56.5%;
+    overflow: hidden;
+    display: flex;
+    transition: 0.3s transform;
+}
+
+.app-wrap.winner-false {
+    animation: linear 1s spin;
+}
+
+/* highlight bar */
+.spinner-container::after {
+    position: absolute;
+    content: '';
+    display: block;
+    height: 45%;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0px;
+    left: 0px;
+    background: rgba(255, 0, 0, .1);
+}
+
+.gradient-fade {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,
+        rgba(64, 64, 64, 1) 0%,
+        rgba(64, 64, 64, 0) 7%,
+        rgba(64, 64, 64, 0) 93%,
+        rgba(64, 64, 64, 1) 100%);
+}

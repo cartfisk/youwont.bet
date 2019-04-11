@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -37,8 +38,16 @@ class ImageUpload extends React.Component {
     render() {
         return (
             <form method="post" encType="multipart/form-data" onSubmit={this.handleSubmit}>
-                <input ref={(ref) => { this.uploadInput = ref; }} type="file" name="file" accept="image/*" />
-                <input type="submit" value="Upload" />
+                <input
+                    id="file"
+                    className="input-file"
+                    ref={(ref) => { this.uploadInput = ref; }}
+                    type="file" name="file"
+                    accept="image/*"
+                    onClick={this.props.onClick}
+                    onChange={this.handleSubmit}
+                />
+                <label htmlFor="file" className="top-buttons blue" id="left-button">BET</label>
             </form>
         );
     }

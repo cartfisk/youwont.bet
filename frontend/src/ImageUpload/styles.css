@@ -1,0 +1,51 @@
+.input-file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+input + label {
+    position: absolute;
+    width: 15.9%;
+    height: 4.3%;
+    padding: 0;
+    border: none;
+    background: url('../img/button.png');
+    background-size: cover;
+    background-blend-mode: hard-light;
+    line-height: 200%;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+label.blue {
+    background-color: rgba(0, 0, 255, 1);
+}
+
+label.green {
+    background-color: rgba(0, 255, 0, 1);
+}
+
+label.yellow {
+    background-color: rgba(255, 255, 0, 1);
+}
+
+label.top-buttons {
+    top: 56.3%;
+}
+
+label.bottom-button {
+    bottom: 3.6%;
+    left: 42%;
+}
+
+label#left-button {
+    left: 31%;
+}
+
+label#right-button {
+    left: 54%;
+}
