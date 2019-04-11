@@ -77,16 +77,21 @@ class Grid:
 
 
 def save_copy_of_master(
-    master_path=MASTER_IMAGE_PATH,
-    iterations_folder="assets/images/composite/iterations",
+    source=MASTER_IMAGE_PATH,
+    destination="assets/images/composite/iterations",
+    backup=True,
 ):
     timestamp = datetime.now().timestamp()
-    path_split = master_path.split(".")
+    path_split = source.split(".")
     extension = path_split[len(path_split) - 1]
     ts_name = "{}.{}".format(timestamp, extension)
-    backup_path = os.path.join(iterations_folder, ts_name)
-    shutil.copy(master_path, backup_path)
-
+    backup_path = os.path.join(destination, ts_name)
+    master_name = "master.png"
+    copy_path = os.path.join(destination, master_name)
+    if backup:
+        shutil.copy(source, backup_path)
+    else:
+        shutil.copy(source, copy_path)
 
 master_grid = Grid(
     rows=10, columns=10, row_height=500, row_gutter=0, column_width=500, column_gutter=0
@@ -98,7 +103,13 @@ def update_master_image(
 ):
     if position <= grid.rows * grid.columns:
         save_copy_of_master(
-            master_path=master_path,
-            iterations_folder="assets/images/composite/iterations",
+            source=master_path,
+            destination="assets/images/composite/iterations",
+            backup=True,
         )
         generate_composite(master_path, submission_path, position, grid)
+        save_copy_of_master(
+            source=master_path,
+            destination="static",
+            backup=False,
+        )

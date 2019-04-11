@@ -25,7 +25,7 @@ from server.constants import (
 from server.email import send_download_email
 from server.moderate import accept
 from server.slack import (
-    # send_slack_moderation_messages,
+    send_slack_moderation_messages,
     slack_message_actions,
 )
 
@@ -67,9 +67,10 @@ def handle_incoming_photo():
     download_code = str(download_code_result.inserted_id)
     _id = mongo_result.inserted_id
 
-    # send_slack_moderation_messages(image_path, _id)
+    send_slack_moderation_messages(image_path, _id)
     # TODO: store cookie and block more than 1 submission
     # TODO: don't make accept happen automatically
+    print("HEADERS YO: %s" % request.headers)
     to_email = request.form.get("email", None)
     if to_email is not None:
         send_download_email(to_email, download_code)

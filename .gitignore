@@ -5,6 +5,7 @@
 # untracked resoujrces
 assets
 data
+photoshop
 
 ### Flask ###
 instance/*
