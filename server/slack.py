@@ -12,7 +12,6 @@ def slack_message_actions(request):
     form_json = json.loads(request.form["payload"])
 
     # Check to see what the user's selection was and update the message
-    print(form_json)
     action_id = form_json["actions"][0]["action_id"]
     selection = action_id[0]
     submission_id = action_id[1]
