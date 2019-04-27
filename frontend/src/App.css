@@ -70,6 +70,10 @@
   background-size: contain;
 }
 
+button {
+  cursor: pointer;
+}
+
 .slot-machine-graphic > button {
   position: absolute;
   width: 15.9%;

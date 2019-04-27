@@ -2,14 +2,14 @@ import React from 'react';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import './styles.css';
 
-function RepeatButton(props) {
-    return (
-        <ImageUpload
-            id='repeatButton'
-            onClick={props.onClick}
-        />
-    );
-}
+// function RepeatButton(props) {
+//     return (
+//         <ImageUpload
+//             id='repeatButton'
+//             onClick={props.onClick}
+//         />
+//     );
+// }
 
 export class SlotMachine extends React.Component {
     constructor(props) {
@@ -47,11 +47,11 @@ export class SlotMachine extends React.Component {
 
     render() {
         const { winner } = this.state;
-        let repeatButton = null;
+        // let repeatButton = null;
 
-        if (winner !== null) {
-            repeatButton = <RepeatButton onClick={this.handleClick} />
-        }
+        // if (winner !== null) {
+        //     repeatButton = <RepeatButton onClick={this.handleClick} />
+        // }
 
         return (
             <div className={'slot-machine-container'}>
@@ -61,7 +61,7 @@ export class SlotMachine extends React.Component {
                     <Spinner onFinish={this.finishHandler} ref={(child) => { this._child3 = child; }} timer="2200" />
                     <div className="gradient-fade"></div>
                 </div>
-                {repeatButton}
+                {/* {repeatButton} */}
             </div>
         );
     }
