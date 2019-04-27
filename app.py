@@ -21,7 +21,6 @@ from server.constants import (
     IMAGE_SUBMISSION_PATHS,
     AUDIO_ARCHIVE_PATH,
 )
-from server.moderate import accept
 from server.slack import (
     send_slack_moderation_messages,
     slack_message_actions,
@@ -68,7 +67,6 @@ def handle_incoming_photo():
     p = multiprocessing.Process(target=send_slack_moderation_messages, args=(image_path, _id,))
     p.start()
 
-    accept(_id)
     return jsonify({"message": "success", "download_code": download_code})
 
 
