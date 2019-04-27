@@ -3,6 +3,7 @@ FROM node:9.11.1
 
 # set working directory
 RUN mkdir /usr/src/app
+RUN mkdir /usr/src/app/node_modules
 WORKDIR /usr/src/app
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
