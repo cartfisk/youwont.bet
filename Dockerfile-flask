@@ -24,12 +24,12 @@ ENV APP /app
 # from there from now on
 RUN mkdir $APP
 WORKDIR $APP
-RUN mkdir assets/images/submissions
-RUN mkdir assets/images/submissions/accepted
-RUN mkdir assets/images/submissions/rejected
-RUN mkdir assets/images/submissions/pending
-RUN mkdir assets/images/submissions/pending
-RUN mkdir assets/images/submissions/composite/iterations
+RUN mkdir assets/images/submissions || true
+RUN mkdir assets/images/submissions/accepted || true
+RUN mkdir assets/images/submissions/rejected || true
+RUN mkdir assets/images/submissions/pending || true
+RUN mkdir assets/images/submissions/pending || true
+RUN mkdir assets/images/submissions/composite/iterations || true
 
 # Expose the port uWSGI will listen on
 EXPOSE 5000
