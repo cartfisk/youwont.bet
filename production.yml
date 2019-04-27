@@ -1,0 +1,15 @@
+# docker-compose.yml
+services:
+  nginx:
+    ports:
+      - 80:80
+
+  frontend:
+    build:
+      dockerfile: Dockerfile-frontend
+    volumes:
+      - './frontend/:/usr/src/app'
+      - '/usr/src/app/node_modules'
+      - './build/:/usr/src/app/build'
+
+restart: always
