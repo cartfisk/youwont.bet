@@ -1,16 +1,48 @@
 # docker-compose.yml
 version: '3.5'
 services:
-  nginx:
+  flask:
+    image: webapp-flask
+    build:
+      context: .
+      dockerfile: Dockerfile-flask
+    environment:
+      - ENV=production
+      - DB=mongodb://db:27017/
+    volumes:
+      - "./:/app"
     ports:
-      - 80:80
+      - 5000:5000
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mongo:latest
+    container_name: "db"
+    environment:
+      - MONGO_DATA_DIR=/usr/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/usr/data/db
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+    restart: always
 
   frontend:
+    container_name: frontend
     build:
-      dockerfile: Dockerfile-frontend
+      context: .
+      dockerfile: Dockerfile-frontend-production
     volumes:
       - './frontend/:/usr/src/app'
       - '/usr/src/app/node_modules'
       - './build/:/usr/src/app/build'
+    environment:
+      - NODE_ENV=production
+      - CHOKIDAR_USEPOLLING=true
 
-restart: always
+networks:
+  default:
+    name: flask
