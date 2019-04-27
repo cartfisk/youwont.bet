@@ -38,7 +38,7 @@ services:
     volumes:
       - './frontend/:/usr/src/app'
       - '/usr/src/app/node_modules'
-      - './build/:/usr/src/app/build'
+      - '/var/www/youwont.bet/build/:/usr/src/app/build'
     environment:
       - NODE_ENV=production
       - CHOKIDAR_USEPOLLING=true
