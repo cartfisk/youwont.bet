@@ -27,7 +27,6 @@ def slack_message_actions(request):
     response = slack_client.api_call(
         "chat.update",
         channel=form_json["channel"]["id"],
-        ts=form_json["message_ts"],
         text=message_text,
         attachments=[],
     )
