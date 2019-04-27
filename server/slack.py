@@ -1,7 +1,8 @@
 import json
 from slackclient import SlackClient
 from flask import jsonify
-# from server.moderate import accept, reject
+
+from server.moderate import accept, reject
 
 SLACK_TOKEN = "xoxb-207397077559-597873676612-sF2fRZ7ehH7CoQE0f5AqAsq2"
 
@@ -12,14 +13,16 @@ def slack_message_actions(request):
 
     # Check to see what the user's selection was and update the message
     print(form_json)
-    selection = form_json["actions"][0]["selected_options"][0]["value"]
+    action_id = form_json["actions"][0]["action_id"]
+    selection = action_id[0]
+    submission_id = action_id[1]
 
-    if selection == "APPROVED":
-        message_text = (
-            "The only winning move is not to play.\nHow about a nice game of chess?"
-        )
-    elif selection == "REJECTED":
+    if selection == "approve":
+        message_text = "Thanks! :joy:"
+        accept(submission_id)
+    elif selection == "reject":
         message_text = ":horse:"
+        reject(submission_id)
 
     slack_client = SlackClient(SLACK_TOKEN)
     response = slack_client.api_call(
