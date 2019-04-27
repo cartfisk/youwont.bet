@@ -40,7 +40,6 @@ def message_actions():
 
 @app.route("/api/v1/upload", methods=["POST"])
 def handle_incoming_photo():
-    print(request.files)
     image = request.files.get("file")
     mongo = MongoClient(os.environ["DB"])
     submissions = mongo["youwont"]["submissions"]
