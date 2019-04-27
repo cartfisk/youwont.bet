@@ -11,6 +11,7 @@ def slack_message_actions(request):
     form_json = json.loads(request.form["payload"])
 
     # Check to see what the user's selection was and update the message
+    print(form_json)
     selection = form_json["actions"][0]["selected_options"][0]["value"]
 
     if selection == "APPROVED":

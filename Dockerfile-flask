@@ -24,6 +24,13 @@ ENV APP /app
 # from there from now on
 RUN mkdir $APP
 WORKDIR $APP
+MKDIR assets/images/submissions
+MKDIR assets/images/submissions/accepted
+MKDIR assets/images/submissions/rejected
+MKDIR assets/images/submissions/pending
+MKDIR assets/images/submissions/pending
+MKDIR assets/images/submissions/composite/iterations
+
 # Expose the port uWSGI will listen on
 EXPOSE 5000
 # Copy the requirements file in order to install
