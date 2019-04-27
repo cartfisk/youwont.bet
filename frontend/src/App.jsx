@@ -2,21 +2,29 @@ import React, { Component } from 'react';
 import './App.css';
 
 import ImageUpload from './ImageUpload/ImageUpload';
+import Modal from './Modal/Modal';
 import { SlotMachine } from './SlotMachine/SlotMachine';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      uploadSuccessful: false
+      uploadSuccessful: false,
+      uploadModalOpen: false
     }
     this.uploadSuccess = this.uploadSuccess.bind(this)
+    this.toggleModal = this.toggleModal.bind(this)
     this.download = this.download.bind(this);
+  }
+
+  toggleModal() {
+    this.setState({ uploadModalOpen: !this.state.uploadModalOpen });
   }
 
   uploadSuccess() {
     this.setState({uploadSuccessful: true});
   }
+
   download() {
 
   }
@@ -24,6 +32,17 @@ class App extends Component {
   render() {
     const uploadDisabled = false;
     const downloadDisabled = !this.state.uploadSuccessful;
+    const modal = this.state.uploadModalOpen ? (
+      <Modal
+        toggleModal={this.toggleModal}
+      >
+        <ImageUpload
+          disabled={uploadDisabled}
+          onConfirm={this.toggleModal}
+          onSuccess={this.uploadSuccess}
+        />
+      </Modal>
+    ) : null;
     return (
       <div className="App">
         <div className="background">
@@ -34,10 +53,10 @@ class App extends Component {
               <div className="reels-container">
                 <SlotMachine />
               </div>
-              <ImageUpload
-                disabled={uploadDisabled}
-                onSuccess={this.uploadSuccess}
-              />
+              <button className="top-buttons blue" id="left-button" onClick={() => this.toggleModal()}>
+                BET
+              </button>
+              {modal}
               <button className={`top-buttons ${downloadDisabled ? 'disabled' : 'green'}`} id="right-button" style={{disabled: true}}>
                 CASH OUT
               </button>

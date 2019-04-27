@@ -7,45 +7,38 @@
     z-index: -1;
 }
 
-input + label {
-    position: absolute;
-    width: 15.9%;
-    height: 4.3%;
+.preview {
+    flex: 1;
+    padding: 10px 0px;
+}
+
+.preview-image {
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+.upload-submit-container {
+    display: flex;
+}
+
+.upload-submit-container > form {
+    flex: 1;
+}
+
+.upload-submit-container > form > label {
+    cursor: pointer;
+}
+
+.confirm-button {
     padding: 0;
     border: none;
-    background: url('../img/button.png');
-    background-size: cover;
-    background-blend-mode: hard-light;
-    line-height: 200%;
-    font-size: 1em;
-    font-weight: bold;
-}
-
-label.blue {
-    background-color: rgba(0, 0, 255, 1);
-}
-
-label.green {
-    background-color: rgba(0, 255, 0, 1);
-}
-
-label.yellow {
-    background-color: rgba(255, 255, 0, 1);
-}
-
-label.top-buttons {
-    top: 56.3%;
-}
-
-label.bottom-button {
-    bottom: 3.6%;
-    left: 42%;
-}
-
-label#left-button {
-    left: 31%;
-}
-
-label#right-button {
-    left: 54%;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    cursor: pointer;
 }
