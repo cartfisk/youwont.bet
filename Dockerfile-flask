@@ -24,12 +24,6 @@ ENV APP /app
 # from there from now on
 RUN mkdir $APP
 WORKDIR $APP
-RUN mkdir assets/images/submissions || true
-RUN mkdir assets/images/submissions/accepted || true
-RUN mkdir assets/images/submissions/rejected || true
-RUN mkdir assets/images/submissions/pending || true
-RUN mkdir assets/images/submissions/pending || true
-RUN mkdir assets/images/submissions/composite/iterations || true
 
 # Expose the port uWSGI will listen on
 EXPOSE 5000
@@ -40,6 +34,12 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 # We copy the rest of the codebase into the image
 COPY . .
+RUN mkdir assets/images/submissions || true
+RUN mkdir assets/images/submissions/accepted || true
+RUN mkdir assets/images/submissions/rejected || true
+RUN mkdir assets/images/submissions/pending || true
+RUN mkdir assets/images/submissions/pending || true
+RUN mkdir assets/images/submissions/composite/iterations || true
 # Finally, we run uWSGI with the ini file we
 # created earlier
 CMD [ "uwsgi", "--ini", "app.ini" ]
