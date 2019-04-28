@@ -45,3 +45,8 @@
     background-color: transparent;
     cursor: pointer;
 }
+
+.disclaimer {
+    font-size: 80%;
+    text-align: right;
+}
