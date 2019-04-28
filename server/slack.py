@@ -18,13 +18,13 @@ def handle_message_action(form_json):
     if selection == "approve":
         message_text = "Photo Approved :camera_with_flash:"
         attachment_text = "This photo will appear on youwont.bet in a moment."
-        accept(submission_id)
+        p = multiprocessing.Process(target=accept, args=(submission_id,))
+        p.start()
     elif selection == "reject":
         message_text = "Photo Rejected :no_entry:"
         attachment_text = "This photo has been rejected but is still available in the `assets/images/submissions/rejected` folder."
-        reject(submission_id)
-
-    slack_client = SlackClient(SLACK_TOKEN)
+        p = multiprocessing.Process(target=reject, args=(submission_id,))
+        p.start()
 
     response_body = {
         "text": message_text,
