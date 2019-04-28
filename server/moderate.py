@@ -1,6 +1,7 @@
 import os
 import shutil
 from pymongo import MongoClient
+from bson import ObjectId
 from flask import jsonify
 
 from server.constants import (
@@ -22,7 +23,7 @@ from server.images import update_master_image
 def get_submission(_id):
     mongo = MongoClient(os.environ["DB"])
     submissions = mongo["youwont"]["submissions"]
-    return submissions.find_one({"_id": _id})
+    return submissions.find_one({"_id": ObjectId(_id)})
 
 
 def handle_file(filename, status):
