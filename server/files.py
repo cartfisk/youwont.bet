@@ -14,6 +14,24 @@ def delete_directory_contents(path):
 
 
 def copy_directory(source, target):
+    try:
+        os.mkdir(target)
+    except FileExistsError:
+        print("directory: {} already exists".format(target))
+    except FileNotFoundError:
+        split_path = target.split("/")
+        for i in range(len(split_path)):
+            if i + 1 < len(split_path):
+                try:
+                    os.mkdir(os.path.join(*split_path[0:i + 1]))
+                except FileExistsError:
+                    print("directory: {} already exists".format(target))
+    finally:
+        try:
+            os.mkdir(target)
+        except FileExistsError:
+            print("directory: {} already exists".format(target))
+
     source_files = os.listdir(source)
     for file in source_files:
         file_path = os.path.join(source, file)
