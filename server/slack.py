@@ -41,7 +41,7 @@ def slack_message_actions(request):
     # Parse the request payload
     form_json = json.loads(request.form["payload"])
 
-    p = multiprocessing.Process(target=handle_message_action, args=(form_json))
+    p = multiprocessing.Process(target=handle_message_action, args=(form_json,))
     p.start()
 
     return jsonify("", 200)
