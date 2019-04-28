@@ -5,6 +5,7 @@
 # untracked resoujrces
 assets/audio
 assets/images/submissions
+assets/images/backups
 data
 photoshop
 *.psd
