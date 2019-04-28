@@ -59,6 +59,8 @@ def moderate(_id, status):
     filename = submission["filename"]
     path = handle_file(filename, status)
     submission = get_submission(_id)
+    print(submission)
+    submission["position"] = position
     return {"success": True, "submission": submission, "file": path}
 
 
@@ -72,5 +74,5 @@ def accept(_id):
 
 
 def reject(_id):
-    moderate("REJECTED")
+    moderate(_id, "REJECTED")
     return True

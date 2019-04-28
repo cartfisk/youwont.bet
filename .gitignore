@@ -6,6 +6,7 @@
 assets
 data
 photoshop
+*.psd
 
 ### Flask ###
 instance/*

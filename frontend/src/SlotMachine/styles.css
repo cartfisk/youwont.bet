@@ -40,7 +40,7 @@ h1 span {
     width: 30%;
     height: 100%;
     overflow: hidden;
-    background: #fff url(./sprite5.png) repeat-y;
+    background: #fff url(./sprite6.png) repeat-y;
     background-size: cover;
     will-change: backgroundPosition;
     transition: 0.3s background-position ease-in-out;
