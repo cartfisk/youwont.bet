@@ -35,7 +35,9 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 # SLACK INTERACTION ENDPOINTS
 @app.route("/api/v1/slack/message_actions", methods=["POST"])
 def message_actions():
-    return slack_message_actions(request)
+    p = multiprocessing.Process(target=slack_message_actions, args=(request,))
+    p.start()
+    return jsonify("", 200)
 
 
 @app.route("/api/v1/upload", methods=["POST"])
