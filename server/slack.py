@@ -1,35 +1,48 @@
 import json
 from slackclient import SlackClient
 from flask import jsonify
+import requests
+import multiprocessing
 
 from server.moderate import accept, reject
 
 SLACK_TOKEN = "xoxb-207397077559-597873676612-sF2fRZ7ehH7CoQE0f5AqAsq2"
 
-
-def slack_message_actions(request):
-    # Parse the request payload
-    form_json = json.loads(request.form["payload"])
-
+def handle_message_action(form_json):
+    response_url = form_json["response_url"]
     # Check to see what the user's selection was and update the message
     action_id = form_json["actions"][0]["action_id"].split("_")
     selection = action_id[0]
     submission_id = action_id[1]
 
     if selection == "approve":
-        message_text = "Thanks! :joy:"
+        message_text = "Photo Approved :camera_with_flash:"
+        attachment_text = "This photo will appear on youwont.bet in a moment."
         accept(submission_id)
     elif selection == "reject":
-        message_text = ":horse:"
+        message_text = "Photo Rejected :no_entry:"
+        attachment_text = "This photo has been rejected but is still available in the `assets/images/submissions/rejected` folder."
         reject(submission_id)
 
     slack_client = SlackClient(SLACK_TOKEN)
-    response = slack_client.api_call(
-        "chat.update",
-        channel=form_json["channel"]["id"],
-        text=message_text,
-        attachments=[],
-    )
+
+    response_body = {
+        "text": message_text,
+        "attachments": [
+            {
+                "text": attachment_text
+            }
+        ],
+        "response_type": "in_channel"
+    }
+    response = requests.post(response_url, json=response_body)
+
+def slack_message_actions(request):
+    # Parse the request payload
+    form_json = json.loads(request.form["payload"])
+
+    p = multiprocessing.Process(target=handle_message_action, args=(form_json))
+    p.start()
 
     return jsonify("", 200)
 
