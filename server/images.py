@@ -4,31 +4,28 @@ import os
 from datetime import datetime
 
 from wand.image import Image
-# from wand.display import display
 
 from server.constants import MASTER_IMAGE_PATH, ORIENTATION_ROTATION_MAPPING
 
 
 def generate_composite(background_path, overlay_path, position, grid):
-    background = open(background_path, "rb")
-    overlay = open(overlay_path, "rb")
     coordinates = grid.get_coordinates_from_position(position)
-    with Image(file=background) as background_img:
-        with Image(file=overlay) as overlay_img:
-            overlay_img.type = "grayscale"
-            short_side = min(iter(overlay_img.size))
-            rotate_right_degree = ORIENTATION_ROTATION_MAPPING.get(overlay_img.orientation, 0)
-            overlay_img.rotate(rotate_right_degree)
-            overlay_img.crop(
-                width=short_side, height=short_side, gravity="center"
-            )
-            overlay_img.resize(grid.column_width, grid.row_height)
-            background_img.composite(
-                overlay_img, left=coordinates.left, top=coordinates.top
-            )
-        overlay.close()
-        background.close()
-        background_img.save(filename=background_path)
+    with open(background_path, "rb") as background:
+        with open(overlay_path, "rb") as overlay:
+            with Image(file=background) as background_img:
+                with Image(file=overlay) as overlay_img:
+                    overlay_img.type = "grayscale"
+                    short_side = min(iter(overlay_img.size))
+                    rotate_right_degree = ORIENTATION_ROTATION_MAPPING.get(overlay_img.orientation, 0)
+                    overlay_img.rotate(rotate_right_degree)
+                    overlay_img.crop(
+                        width=short_side, height=short_side, gravity="center"
+                    )
+                    overlay_img.resize(grid.column_width, grid.row_height)
+                    background_img.composite(
+                        overlay_img, left=coordinates.left, top=coordinates.top
+                    )
+                background_img.save(filename=background_path)
     return True
 
 
@@ -93,14 +90,15 @@ def save_copy_of_master(
     else:
         shutil.copy(source, copy_path)
 
-master_grid = Grid(
-    rows=10, columns=10, row_height=500, row_gutter=0, column_width=500, column_gutter=0
-)
+
 
 
 def update_master_image(
-    submission_path, position, grid=master_grid, master_path=MASTER_IMAGE_PATH
+    submission_path, position, master_path=MASTER_IMAGE_PATH
 ):
+    grid = Grid(
+        rows=10, columns=10, row_height=500, row_gutter=0, column_width=500, column_gutter=0
+    )
     if position <= grid.rows * grid.columns:
         save_copy_of_master(
             source=master_path,

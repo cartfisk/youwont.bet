@@ -19,7 +19,7 @@ import multiprocessing
 
 from server.constants import (
     IMAGE_SUBMISSION_PATHS,
-    AUDIO_ARCHIVE_PATH,
+    # AUDIO_ARCHIVE_PATH,
 )
 from server.slack import (
     send_slack_moderation_messages,
@@ -67,24 +67,6 @@ def handle_incoming_photo():
 
     return jsonify({"message": "success", "download_code": download_code})
 
-
-@app.route("/api/v1/download/<code>", methods=["GET"])
-def download_album(code):
-    mongo = MongoClient(os.environ["DB"])
-    download_codes = mongo["youwont"]["download_codes"]
-    code_doc = download_codes.find_one({"_id": ObjectId(code)})
-    is_valid = False
-    if code_doc is not None:
-        is_valid = code_doc.get("valid", False)
-    if is_valid:
-        return send_file(
-            AUDIO_ARCHIVE_PATH,
-            attachment_filename="pace-yourself.zip",
-            as_attachment=True,
-            mimetype="application/zip"
-        )
-    else:
-        return jsonify({"message": "invalid download code"}), 400
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
