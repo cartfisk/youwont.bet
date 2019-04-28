@@ -78,8 +78,8 @@ class ImageUpload extends React.Component {
                     >
                         CONFIRM
                     </button>
-                    <p className="disclaimer"><em>*photos are submitted at-will and may appear in future vlush media</em></p>
                 </div>
+                <p className="disclaimer"><em>*photos are submitted at-will and may appear in future vlush media</em></p>
             </React.Fragment>
         );
     }
