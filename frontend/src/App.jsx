@@ -5,6 +5,8 @@ import ImageUpload from './ImageUpload/ImageUpload';
 import Modal from './Modal/Modal';
 import { SlotMachine } from './SlotMachine/SlotMachine';
 
+import audio from './sound/audio.mp3';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -65,6 +67,12 @@ class App extends Component {
               </button>
             </div>
           </div>
+        </div>
+        <div style={{display: "none"}}>
+          <audio controls autoplay>
+            <source src={audio} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
         </div>
       </div>
     );
