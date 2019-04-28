@@ -12,15 +12,21 @@ class App extends Component {
     super(props);
     this.state = {
       uploadSuccessful: false,
-      uploadModalOpen: false
+      uploadModalOpen: false,
+      successModalOpen: false,
     }
     this.uploadSuccess = this.uploadSuccess.bind(this)
-    this.toggleModal = this.toggleModal.bind(this)
+    this.toggleUploadModal = this.toggleUploadModal.bind(this)
+    this.toggleSuccessModal = this.toggleSuccessModal.bind(this)
     this.download = this.download.bind(this);
   }
 
-  toggleModal() {
+  toggleUploadModal() {
     this.setState({ uploadModalOpen: !this.state.uploadModalOpen });
+    this.setState({ successModalOpen: this.state.uploadModalOpen });
+  }
+  toggleSuccessModal() {
+    this.setState({ successModalOpen: !this.state.successModalOpen });
   }
 
   uploadSuccess() {
@@ -34,15 +40,25 @@ class App extends Component {
   render() {
     const uploadDisabled = false;
     const downloadDisabled = !this.state.uploadSuccessful;
-    const modal = this.state.uploadModalOpen ? (
+    const uploadModal = this.state.uploadModalOpen ? (
       <Modal
-        toggleModal={this.toggleModal}
+        toggleModal={this.toggleUploadModal}
       >
         <ImageUpload
           disabled={uploadDisabled}
-          onConfirm={this.toggleModal}
+          onConfirm={this.toggleUploadModal}
           onSuccess={this.uploadSuccess}
         />
+      </Modal>
+    ) : null;
+    const successModal = this.state.successModalOpen ? (
+      <Modal
+        toggleModal={this.toggleSuccessModal}
+      >
+        <div className="success">
+          <h2>we got your drop</h2>
+          <h3>thank you.</h3>
+        </div>
       </Modal>
     ) : null;
     return (
@@ -50,15 +66,15 @@ class App extends Component {
         <div className="background">
           <div className="grid">
             <div className="slot-machine-graphic">
-              <div className="album-art">
-              </div>
+              <a className="album-art" href="https://youwont.bet/static/master.png"></a>
               <div className="reels-container">
                 <SlotMachine />
               </div>
-              <button className="top-buttons blue" id="left-button" onClick={() => this.toggleModal()}>
+              <button className="top-buttons blue" id="left-button" onClick={() => this.toggleUploadModal()}>
                 BET
               </button>
-              {modal}
+              {uploadModal}
+              {successModal}
               <button className={`top-buttons ${downloadDisabled ? 'disabled' : 'green'}`} id="right-button" style={{disabled: true}}>
                 CASH OUT
               </button>
