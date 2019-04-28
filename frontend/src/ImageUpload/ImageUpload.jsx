@@ -47,7 +47,7 @@ class ImageUpload extends React.Component {
         return (
             <React.Fragment>
                 <div>
-                    <h2>place your bets</h2>
+                    <h2>the best photos make you feel something, share a special one with us</h2>
                 </div>
                 <div className="preview">
                     <div 
@@ -57,7 +57,6 @@ class ImageUpload extends React.Component {
                             border: this.state.file ? "none" : "1px dashed white" 
                         }}
                     >
-                        {this.state.file ? "" : "choose an image"}
                     </div>
                 </div>
                 <div className="upload-submit-container">
@@ -79,6 +78,7 @@ class ImageUpload extends React.Component {
                     >
                         CONFIRM
                     </button>
+                    <p className="disclaimer"><em>*photos are submitted at-will and may appear in future vlush media</em></p>
                 </div>
             </React.Fragment>
         );
