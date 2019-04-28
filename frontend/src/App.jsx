@@ -69,7 +69,7 @@ class App extends Component {
           </div>
         </div>
         <div style={{display: "none"}}>
-          <audio controls autoplay>
+          <audio controls autoPlay>
             <source src={audio} type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
