@@ -23,7 +23,7 @@ from server.images import update_master_image
 def get_submission(_id):
     mongo = MongoClient(os.environ["DB"])
     submissions = mongo["youwont"]["submissions"]
-    return submissions.find_one({"_id": ObjectId(_id)})
+    return submissions.find_one({"_id": _id})
 
 
 def handle_file(filename, status):
@@ -33,7 +33,8 @@ def handle_file(filename, status):
     return new_path
 
 
-def moderate(_id, status):
+def moderate(string_id, status):
+    _id = ObjectId(string_id)
     submission = get_submission(_id)
     mongo = MongoClient(os.environ["DB"])
     submissions = mongo["youwont"]["submissions"]
@@ -46,7 +47,6 @@ def moderate(_id, status):
     if last_accepted_cursor.count() > 0:
         position = last_accepted_cursor.next()["position"] + 1
 
-    print(submission)
     if submission is not None:
         update = {"status": status}
         if status == "ACCEPTED":
@@ -54,12 +54,12 @@ def moderate(_id, status):
         mongo = MongoClient(os.environ["DB"])
         submissions = mongo["youwont"]["submissions"]
         submissions.update_one({"_id": _id}, {"$set": update})
+
     else:
         return {"success": False, "error": "Can't find that submission."}
     filename = submission["filename"]
     path = handle_file(filename, status)
     submission = get_submission(_id)
-    print(submission)
     submission["position"] = position
     return {"success": True, "submission": submission, "file": path}
 
