@@ -38,8 +38,8 @@ RUN mkdir assets/images/submissions || true
 RUN mkdir assets/images/submissions/accepted || true
 RUN mkdir assets/images/submissions/rejected || true
 RUN mkdir assets/images/submissions/pending || true
-RUN mkdir assets/images/submissions/pending || true
 RUN mkdir assets/images/composite/iterations || true
+RUN mkdir assets/images/composite/original || true
 RUN mkdir assets/images/backups || true
 # Finally, we run uWSGI with the ini file we
 # created earlier
