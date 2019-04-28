@@ -67,7 +67,7 @@
   top: 8.7%;
   left: 33.3%;
   background-image: url('//youwont.bet/static/master.png');
-  background-size: contain;
+  background-size: cover;
 }
 
 button {
