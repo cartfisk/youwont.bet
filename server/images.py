@@ -10,22 +10,24 @@ from server.constants import MASTER_IMAGE_PATH, ORIENTATION_ROTATION_MAPPING
 
 def generate_composite(background_path, overlay_path, position, grid):
     coordinates = grid.get_coordinates_from_position(position)
-    with open(background_path, "rb") as background:
-        with open(overlay_path, "rb") as overlay:
-            with Image(file=background) as background_img:
-                with Image(file=overlay) as overlay_img:
-                    overlay_img.type = "grayscale"
-                    short_side = min(iter(overlay_img.size))
-                    rotate_right_degree = ORIENTATION_ROTATION_MAPPING.get(overlay_img.orientation, 0)
-                    overlay_img.rotate(rotate_right_degree)
-                    overlay_img.crop(
-                        width=short_side, height=short_side, gravity="center"
-                    )
-                    overlay_img.resize(grid.column_width, grid.row_height)
-                    background_img.composite(
-                        overlay_img, left=coordinates.left, top=coordinates.top
-                    )
-                background_img.save(filename=background_path)
+    background = open(background_path, "rb")
+    overlay = open(overlay_path, "rb")
+    with Image(file=background) as background_img:
+        with Image(file=overlay) as overlay_img:
+            overlay_img.type = "grayscale"
+            short_side = min(iter(overlay_img.size))
+            rotate_right_degree = ORIENTATION_ROTATION_MAPPING.get(overlay_img.orientation, 0)
+            overlay_img.rotate(rotate_right_degree)
+            overlay_img.crop(
+                width=short_side, height=short_side, gravity="center"
+            )
+            overlay_img.resize(grid.column_width, grid.row_height)
+            background_img.composite(
+                overlay_img, left=coordinates.left, top=coordinates.top
+            )
+        background_img.save(filename=background_path)
+    overlay.close()
+    background.close()
     return True
 
 
