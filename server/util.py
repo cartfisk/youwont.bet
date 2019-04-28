@@ -16,3 +16,7 @@ def reset_submissions():
         "assets/images/composite/original/master.png",
         "assets/images/composite/master.png",
     )
+    shutil.copy(
+        "assets/images/composite/original/master.png",
+        "static/master.png",
+    )
