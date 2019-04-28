@@ -10,7 +10,7 @@ def reset_submissions():
     submissions = mongo["youwont"]["submissions"]
     submissions.delete_many({})
 
-    now = str(datetime.now().timestamp()).replace(".", " ")
+    now = str(datetime.now().timestamp()).replace(".", "")
 
     copy_directory("assets/images/composite/iterations", "assets/images/backups/{}/composite/iterations".format(now))
     delete_directory_contents("assets/images/composite/iterations")
