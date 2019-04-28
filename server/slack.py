@@ -2,13 +2,15 @@ import json
 from slackclient import SlackClient
 from flask import jsonify
 import requests
-import multiprocessing
 
 from server.moderate import accept, reject
 
 SLACK_TOKEN = "xoxb-207397077559-597873676612-sF2fRZ7ehH7CoQE0f5AqAsq2"
 
-def handle_message_action(form_json):
+def slack_message_actions(request):
+    # Parse the request payload
+    form_json = json.loads(request.form["payload"])
+
     response_url = form_json["response_url"]
     # Check to see what the user's selection was and update the message
     action_id = form_json["actions"][0]["action_id"].split("_")
@@ -36,15 +38,7 @@ def handle_message_action(form_json):
         "response_type": "in_channel"
     }
     response = requests.post(response_url, json=response_body)
-
-def slack_message_actions(request):
-    # Parse the request payload
-    form_json = json.loads(request.form["payload"])
-
-    p = multiprocessing.Process(target=handle_message_action, args=(form_json,))
-    p.start()
-
-    return jsonify("", 200)
+    return response
 
 
 def send_slack_moderation_messages(image_path, _id):
