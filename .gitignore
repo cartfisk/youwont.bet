@@ -3,7 +3,8 @@
 # Edit at https://www.gitignore.io/?templates=vim,linux,macos,flask,python,windows,sublimetext
 
 # untracked resoujrces
-assets
+assets/audio
+assets/images/submissions
 data
 photoshop
 *.psd
