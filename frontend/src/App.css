@@ -83,7 +83,7 @@ button {
   background: url('./img/button.png');
   background-size: cover;
   background-blend-mode: hard-light;
-  line-height: 3;
+  font-size: 2vh;
   font-weight: bold;
 }
 
@@ -108,8 +108,11 @@ button {
 }
 
 .slot-machine-graphic > button.bottom-button {
-  bottom: 3.6%;
-  left: 42%;
+  bottom: 2.6%;
+  left: 31%;
+  width: 35%;
+  height: 8%;
+  background-size: 100% 100%;
 }
 
 .slot-machine-graphic > button#left-button {
@@ -118,6 +121,7 @@ button {
 
 .slot-machine-graphic > button#right-button {
   left: 54%;
+  font-size: 1.2vh;
 }
 
 .reels-container {
