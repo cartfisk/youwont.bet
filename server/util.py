@@ -3,6 +3,7 @@ import os
 import shutil
 from pymongo import MongoClient
 from datetime import datetime
+from flask import current_app
 
 
 def reset_submissions():

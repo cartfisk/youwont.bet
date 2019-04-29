@@ -1,5 +1,5 @@
 import React from 'react';
-import ImageUpload from '../ImageUpload/ImageUpload';
+// import ImageUpload from '../ImageUpload/ImageUpload';
 import './styles.css';
 
 // function RepeatButton(props) {
@@ -14,15 +14,15 @@ import './styles.css';
 export class SlotMachine extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            winner: null
-        }
+        // this.state = {
+        //     winner: null
+        // }
         this.finishHandler = this.finishHandler.bind(this)
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick() {
-        this.setState({ winner: null });
+        // this.setState({ winner: null });
         this.emptyArray();
         this._child1.forceUpdateHandler();
         this._child2.forceUpdateHandler();
@@ -33,12 +33,6 @@ export class SlotMachine extends React.Component {
 
     finishHandler(value) {
         SlotMachine.matches.push(value);
-
-        if (SlotMachine.matches.length === 3) {
-            const first = SlotMachine.matches[0];
-            let results = SlotMachine.matches.every(match => match === first)
-            this.setState({ winner: results });
-        }
     }
 
     emptyArray() {
@@ -46,12 +40,6 @@ export class SlotMachine extends React.Component {
     }
 
     render() {
-        const { winner } = this.state;
-        // let repeatButton = null;
-
-        // if (winner !== null) {
-        //     repeatButton = <RepeatButton onClick={this.handleClick} />
-        // }
 
         return (
             <div className={'slot-machine-container'}>

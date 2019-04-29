@@ -13,6 +13,8 @@ from flask import (
     abort,
     jsonify,
     send_file,
+    current_app,
+    Blueprint,
 )
 from werkzeug.utils import secure_filename
 import multiprocessing
@@ -28,19 +30,18 @@ from server.slack import (
 
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 
-app = Flask(__name__)
-app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
+api = Blueprint('api', __name__, url_prefix='/api/v1')
 
 
 # SLACK INTERACTION ENDPOINTS
-@app.route("/api/v1/slack/message_actions", methods=["POST"])
+@api.route("/slack/message_actions", methods=["POST"])
 def message_actions():
     return slack_message_actions(request)
 
-@app.route("/api/v1/upload", methods=["POST"])
+@api.route("/upload", methods=["POST"])
 def handle_incoming_photo():
     image = request.files.get("file")
-    mongo = MongoClient(os.environ["DB"])
+    mongo = MongoClient(current_app.config["DB"])
     submissions = mongo["youwont"]["submissions"]
     download_codes = mongo["youwont"]["download_codes"]
     extension = image.filename.split(".")[-1]
@@ -66,7 +67,3 @@ def handle_incoming_photo():
     p.start()
 
     return jsonify({"message": "success", "download_code": download_code})
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")
