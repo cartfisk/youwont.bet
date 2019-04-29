@@ -30,6 +30,12 @@ services:
     command: mongod --smallfiles --logpath=/dev/null # --quiet
     restart: always
 
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    restart: always
+
   frontend:
     container_name: frontend
     build:
@@ -42,6 +48,20 @@ services:
     environment:
       - NODE_ENV=production
       - CHOKIDAR_USEPOLLING=true
+
+  worker:
+    container_name: worker
+    environment:
+      - DB=mongodb://db:27017/
+    build:
+      context: .
+      dockerfile: Dockerfile-worker
+    volumes:
+      - "./:/app"
+    depends_on:
+      - redis
+      - db
+    restart: always
 
 networks:
   default:

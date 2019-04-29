@@ -28,6 +28,11 @@ services:
       - 27017:27017
     command: mongod --smallfiles --logpath=/dev/null # --quiet
 
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
   nginx:
     image: webapp-nginx
     build:
@@ -50,6 +55,20 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+
+  worker:
+    container_name: worker
+    build:
+      context: .
+      dockerfile: Dockerfile-worker
+    environment:
+      LOCAL_SETTINGS: /app/settings.cfg
+    volumes:
+      - "./:/app"
+    depends_on:
+      - redis
+      - db
+
 
 networks:
   default:

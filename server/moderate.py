@@ -2,13 +2,16 @@ import os
 import shutil
 from pymongo import MongoClient
 from bson import ObjectId
+import redis
+from rq import Queue
+from flask import current_app
 
 from server.constants import IMAGE_SUBMISSION_PATHS
 from server.images import update_master_image
 
 
 def get_submission(_id):
-    mongo = MongoClient(os.environ["DB"])
+    mongo = MongoClient(current_app.config["DB"])
     submissions = mongo["youwont"]["submissions"]
     return submissions.find_one({"_id": _id})
 
@@ -23,7 +26,7 @@ def handle_file(filename, status):
 def moderate(string_id, status):
     _id = ObjectId(string_id)
     submission = get_submission(_id)
-    mongo = MongoClient(os.environ["DB"])
+    mongo = MongoClient(current_app.config["DB"])
     submissions = mongo["youwont"]["submissions"]
     last_accepted_cursor = (
         submissions.find({"position": {"$exists": True}})
@@ -48,7 +51,7 @@ def moderate(string_id, status):
     return {"success": True, "submission": submission, "file": path}
 
 
-def accept(_id):
+def queued_accept(_id):
     result = moderate(_id, "ACCEPTED")
     if result.get("success", False):
         update_master_image(result["file"], result["submission"]["position"])
@@ -57,6 +60,18 @@ def accept(_id):
         return False
 
 
-def reject(_id):
+def queued_reject(_id):
     moderate(_id, "REJECTED")
     return True
+
+def queue(task, args):
+    redis_url = current_app.config['REDIS_URL']
+    redis_connection = redis.from_url(redis_url)
+    q = Queue(connection=redis_connection)
+    q.enqueue(task, args)
+
+def accept(_id):
+    queue(queued_accept, _id)
+
+def reject(_id):
+    queue(queued_reject, _id)
