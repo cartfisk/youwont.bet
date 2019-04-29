@@ -81,7 +81,8 @@ class App extends Component {
         <div className="background">
           <div className="grid">
             <div className="slot-machine-graphic">
-              <a className="album-art" href="https://youwont.bet/static/master.png"></a>
+              {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
+              <a className="album-art" href="//youwont.bet/static/master.jpg"></a>
               <div className="reels-container">
                 <SlotMachine />
               </div>

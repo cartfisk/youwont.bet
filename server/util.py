@@ -4,7 +4,8 @@ import shutil
 from pymongo import MongoClient
 from datetime import datetime
 from flask import current_app
-
+from server.images import save_copy_of_master
+from server.constants import MASTER_IMAGE_PATH
 
 def reset_submissions():
     mongo = MongoClient(os.environ["DB"])
@@ -32,4 +33,12 @@ def reset_submissions():
     shutil.copy(
         "assets/images/composite/original/master.png",
         "static/master.png",
+    )
+
+def create_jpg():
+    save_copy_of_master(
+        source=MASTER_IMAGE_PATH,
+        destination="static",
+        backup=False,
+        jpeg=True,
     )

@@ -79,6 +79,7 @@ def save_copy_of_master(
     source=MASTER_IMAGE_PATH,
     destination="assets/images/composite/iterations",
     backup=True,
+    jpeg=False,
 ):
     timestamp = datetime.now().timestamp()
     path_split = source.split(".")
@@ -87,6 +88,11 @@ def save_copy_of_master(
     backup_path = os.path.join(destination, ts_name)
     master_name = "master.png"
     copy_path = os.path.join(destination, master_name)
+    if jpeg:
+        with Image(file=open(source, "rb")) as image:
+            image.format = 'jpeg'
+            image.compression_quality = 65
+            image.save(filename="{}/master.jpg".format(destination))
     if backup:
         shutil.copy(source, backup_path)
     else:
@@ -112,4 +118,5 @@ def update_master_image(
             source=master_path,
             destination="static",
             backup=False,
+            jpeg=True,
         )
