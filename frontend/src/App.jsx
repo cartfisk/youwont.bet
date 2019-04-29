@@ -14,29 +14,34 @@ class App extends Component {
       uploadSuccessful: false,
       uploadModalOpen: false,
       successModalOpen: false,
+      creditsModalOpen: false,
     }
     this.uploadSuccess = this.uploadSuccess.bind(this)
     this.toggleUploadModal = this.toggleUploadModal.bind(this)
     this.toggleSuccessModal = this.toggleSuccessModal.bind(this)
+    this.toggleCreditsModal = this.toggleCreditsModal.bind(this)
     this.download = this.download.bind(this);
   }
 
   toggleUploadModal() {
     this.setState({ uploadModalOpen: !this.state.uploadModalOpen });
-    this.setState({ successModalOpen: this.state.uploadModalOpen });
   }
   toggleSuccessModal() {
     this.setState({ successModalOpen: !this.state.successModalOpen });
   }
+  toggleCreditsModal() {
+    this.setState({ creditsModalOpen: !this.state.creditsModalOpen });
+  }
 
   uploadSuccess() {
-    this.setState({uploadSuccessful: true});
+    this.toggleUploadModal()
+    this.toggleSuccessModal()
   }
 
   download() {
 
   }
-  
+
   render() {
     const uploadDisabled = false;
     const downloadDisabled = !this.state.uploadSuccessful;
@@ -46,8 +51,7 @@ class App extends Component {
       >
         <ImageUpload
           disabled={uploadDisabled}
-          onConfirm={this.toggleUploadModal}
-          onSuccess={this.uploadSuccess}
+          onConfirm={this.uploadSuccess}
         />
       </Modal>
     ) : null;
@@ -61,6 +65,17 @@ class App extends Component {
         </div>
       </Modal>
     ) : null;
+    const creditsModal = this.state.creditsModalOpen ? (
+      <Modal
+        toggleModal={this.toggleCreditsModal}
+      >
+        <div className="credits">
+          <p>youwont.bet concept and design by vlush</p>
+          <p>developed by vlush, Thomas J. Fox, and rainmayecho</p>
+          <p>© 2019  vlush  All Rights Reserved</p>
+        </div>
+      </Modal>
+    ) : null;
     return (
       <div className="App">
         <div className="background">
@@ -70,17 +85,19 @@ class App extends Component {
               <div className="reels-container">
                 <SlotMachine />
               </div>
-              <button className="top-buttons blue" id="left-button" onClick={() => this.toggleUploadModal()}>
+              <button className="top-buttons green" id="left-button" onClick={() => this.toggleUploadModal()}>
                 BET
               </button>
               {uploadModal}
               {successModal}
+              {creditsModal}
               <button className={`top-buttons ${downloadDisabled ? 'disabled' : 'green'}`} id="right-button" style={{disabled: true}}>
                 CASH OUT
               </button>
-              <button className="bottom-button yellow">
+              <button className="bottom-button yellow" onClick={() => this.toggleCreditsModal()}>
                 CREDITS
               </button>
+
             </div>
           </div>
         </div>

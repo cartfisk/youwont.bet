@@ -1,28 +1,14 @@
 import React from 'react';
-// import ImageUpload from '../ImageUpload/ImageUpload';
 import './styles.css';
-
-// function RepeatButton(props) {
-//     return (
-//         <ImageUpload
-//             id='repeatButton'
-//             onClick={props.onClick}
-//         />
-//     );
-// }
 
 export class SlotMachine extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     winner: null
-        // }
         this.finishHandler = this.finishHandler.bind(this)
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick() {
-        // this.setState({ winner: null });
         this.emptyArray();
         this._child1.forceUpdateHandler();
         this._child2.forceUpdateHandler();
@@ -49,7 +35,6 @@ export class SlotMachine extends React.Component {
                     <Spinner onFinish={this.finishHandler} ref={(child) => { this._child3 = child; }} timer="2200" />
                     <div className="gradient-fade"></div>
                 </div>
-                {/* {repeatButton} */}
             </div>
         );
     }
