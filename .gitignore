@@ -3,6 +3,7 @@
 
 # untracked resoujrces
 assets
+!docs/assets
 data
 photoshop
 *.psd
